@@ -1,3 +1,7 @@
+/*
+ * Author: Security Bong
+ */
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.safetynet.SafetyNet;
