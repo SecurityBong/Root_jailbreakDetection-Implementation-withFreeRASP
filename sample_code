@@ -1,0 +1,99 @@
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.safetynet.SafetyNet;
+import com.google.android.gms.safetynet.SafetyNetApi;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import android.os.Debug;
+import android.util.Log;
+import com.talosdigital.safeout.Talos;
+
+public class SecurityHelper {
+
+    // Root Detection
+    public static boolean isRootedDevice() {
+        return checkRootFiles() || checkRootCommands() || checkRootPackages();
+    }
+
+    private static boolean checkRootFiles() {
+        String[] rootFiles = { "/system/bin/su", "/system/xbin/su", "/sbin/su", "/system/app/Superuser.apk",
+                "/system/app/SuperSU.apk", "/system/app/MagiskManager.apk" };
+        for (String file : rootFiles) {
+            if (new File(file).exists()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean checkRootCommands() {
+        try {
+            Process process = Runtime.getRuntime().exec(new String[] { "/system/xbin/which", "su" });
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            if (bufferedReader.readLine() != null) {
+                return true;
+            }
+        } catch (Exception e) {
+            // Ignore exceptions
+        }
+        return false;
+    }
+
+    private static boolean checkRootPackages() {
+        String[] rootPackages = { "com.noshufou.android.su", "com.thirdparty.superuser", "eu.chainfire.supersu",
+                "com.koushikdutta.superuser" };
+        PackageManager packageManager = getApplicationContext().getPackageManager();
+        for (String packageName : rootPackages) {
+            try {
+                packageManager.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
+                return true;
+            } catch (PackageManager.NameNotFoundException e) {
+                // Package not found
+            }
+        }
+        return false;
+    }
+
+    // Tamper Detection
+    public static boolean isTampered() {
+        return checkIntegrity() || checkDebuggable() || checkFrida();
+    }
+
+    private static boolean checkIntegrity() {
+        // Implement integrity check logic, such as checksum verification, to detect tampering with critical files
+        // Return true if tampering is detected
+        return false;
+    }
+
+    private static boolean checkDebuggable() {
+        return (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+    }
+
+    private static boolean checkFrida() {
+        try {
+            throw new RuntimeException();
+        } catch (RuntimeException e) {
+            for (StackTraceElement element : e.getStackTrace()) {
+                if (element.getClassName().contains("frida") || element.getClassName().contains("objection")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    // Anti-Debugging Techniques
+    public static boolean isDebuggerAttached() {
+        return Debug.isDebuggerConnected();
+    }
+
+    // Code Obfuscation
+    // Apply code obfuscation techniques to make it harder for attackers to understand and modify the code.
+    // This can include using tools like ProGuard,
+
+    // Runtime Application Self-Protection (RASP)
+    public static void initializeRASP() {
+        Talos.initialize(getApplicationContext());
+        Talos.startProtection();
+    }
+}
