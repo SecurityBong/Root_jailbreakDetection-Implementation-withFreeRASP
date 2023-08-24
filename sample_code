@@ -102,7 +102,7 @@ public class SecurityHelper {
     }
 }
 
-##or you can do this way
+*##or you can do this way*
 
 // Android & iOS
         privilegedAccess: () => {
