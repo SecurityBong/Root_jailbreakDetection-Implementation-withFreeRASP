@@ -101,3 +101,61 @@ public class SecurityHelper {
         Talos.startProtection();
     }
 }
+
+##or you can do this way
+
+// Android & iOS
+        privilegedAccess: () => {
+            console.log('privilegedAccess');
+            throw Error('Issue found in privilegedAccess');
+        },
+        // Android & iOS
+        debug: () => {
+            console.log('debug');
+            throw Error('Issue found in debug');
+        },
+        // Android & iOS
+        simulator: () => {
+            console.log('simulator');
+            throw Error('Issue found in simulator');
+        },
+        // Android & iOS
+        appIntegrity: () => {
+            console.log('appIntegrity');
+            throw Error('Issue found in appIntegrity');
+        },
+        // Android & iOS
+        unofficialStore: () => {
+            console.log('unofficialStore');
+            throw Error('Issue found in unofficialStore');
+        },
+        // Android & iOS
+        hooks: () => {
+            console.log('hooks');
+            throw Error('Issue found in hooks');
+        },
+        // Android & iOS
+        deviceBinding: () => {
+            console.log('deviceBinding');
+            throw Error('Issue found in deviceBinding');
+        },
+        // Android & iOS
+        secureHardwareNotAvailable: () => {
+            console.log('secureHardwareNotAvailable');
+            throw Error('Issue found in secureHardwareNotAvailable');
+        },
+        // Android & iOS
+        passcode: () => {
+            console.log('passcode');
+            throw Error('Issue found in passcode');
+        },
+        // iOS only
+        deviceID: () => {
+            console.log('deviceID');
+            throw Error('Issue found in deviceID');
+        },
+        // Android only
+        obfuscationIssues: () => {
+            console.log('obfuscationIssues');
+            throw Error('Issue found in obfuscationIssues');
+        },
